@@ -1,0 +1,83 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Procedural shaders and tools for Blender</title><meta name="description" content="Material packs and tools for Blender 5.2"><style>
+@import url('https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500&display=swap');
+:root{--paper:#ffffff;--ink:#000000;--grey:#6e6e6e;--hair:#e3e3e3;--fog:#f4f4f4;--accent:#1f2bff}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font:400 17px/1.55 Jost,Futura,"Century Gothic","Avenir Next",sans-serif}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.wrap{max-width:1320px;margin:0 auto;padding:0 32px}
+.top{display:flex;justify-content:space-between;align-items:baseline;padding:28px 0;font-size:15px;color:var(--grey)}
+.top a{text-decoration:none}.top a:hover{color:var(--ink)}
+.hero{padding:72px 0 40px}
+.hero h1{font-weight:300;font-size:clamp(44px,8.4vw,128px);line-height:.95;letter-spacing:-.035em;margin:0;max-width:11ch}
+.hero .lead{font-size:clamp(19px,2vw,24px);font-weight:300;max-width:38ch;margin:36px 0 0}
+.hero .sub{color:var(--grey);max-width:60ch;margin:14px 0 0}
+.renders{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:56px 0 0}
+.sq{aspect-ratio:1/1;background:var(--fog);position:relative;overflow:hidden}
+.sq img{width:100%;height:100%;object-fit:cover;display:block}
+.ph{position:absolute;inset:0;display:grid;place-items:center;text-align:center;color:var(--grey);font-size:14px;
+ background:repeating-linear-gradient(135deg,var(--fog) 0 14px,#ececec 14px 15px)}
+.ph b{display:block;font-weight:500;color:var(--ink);font-size:15px}
+.facts{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--ink);margin:88px 0 0}
+.facts div{padding:18px 18px 0 0}
+.facts strong{display:block;font-weight:300;font-size:44px;line-height:1;letter-spacing:-.02em}
+.facts span{color:var(--grey);font-size:15px}
+section{padding:104px 0 0}
+h2{font-weight:300;font-size:clamp(30px,3.6vw,48px);letter-spacing:-.02em;line-height:1.05;margin:0 0 12px}
+.intro{color:var(--grey);max-width:62ch;margin:0 0 36px}
+.how{display:grid;grid-template-columns:1fr 1fr;gap:56px}
+.how h3{font-weight:500;font-size:19px;margin:0 0 8px}
+.how p{margin:0;color:var(--grey);max-width:52ch}
+.bar{display:flex;flex-wrap:wrap;gap:6px 22px;align-items:center;border-bottom:1px solid var(--hair);padding:0 0 14px;margin:0 0 28px}
+.bar button{font:inherit;font-size:16px;background:none;border:0;padding:4px 0;color:var(--grey);cursor:pointer;border-bottom:2px solid transparent}
+.bar button[aria-pressed=true]{color:var(--ink);border-color:var(--accent)}
+.bar input{margin-left:auto;font:inherit;font-size:16px;border:0;border-bottom:1px solid var(--ink);padding:4px 0;width:200px;background:none}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:28px 16px}
+.tile{all:unset;cursor:pointer;display:block}
+.tile .sq{transition:transform .25s}
+.tile:hover .sq{transform:scale(.97)}
+.tile:focus-visible{outline:2px solid var(--accent);outline-offset:4px}
+.tile .nm{display:block;margin-top:10px;font-size:16px;line-height:1.3}
+.tile .ct{display:block;color:var(--grey);font-size:14px}
+.empty{color:var(--grey);padding:40px 0}
+dialog{border:0;padding:0;max-width:1080px;width:calc(100% - 40px);background:var(--paper);color:var(--ink)}
+dialog::backdrop{background:rgba(255,255,255,.92)}
+.dlg{display:grid;grid-template-columns:1.05fr 1fr;border:1px solid var(--ink)}
+.dlg .sq{aspect-ratio:1/1}
+.side{padding:30px 32px;max-height:min(86vh,560px);overflow:auto}
+.side h3{font-weight:300;font-size:34px;letter-spacing:-.02em;line-height:1.05;margin:0}
+.side .d{color:var(--grey);margin:8px 0 0}
+.side .eng{display:inline-block;margin-top:12px;font-size:14px;border:1px solid var(--ink);padding:1px 8px}
+.close{position:absolute;right:14px;top:10px;font:inherit;font-size:28px;font-weight:300;background:none;border:0;cursor:pointer;line-height:1}
+.ctl{margin-top:26px}
+.ctl h4{font-weight:500;font-size:16px;margin:0 0 10px;padding-bottom:8px;border-bottom:1px solid var(--ink)}
+.chk{display:flex;align-items:center;gap:12px;padding:6px 0;font-size:16px;cursor:pointer}
+.chk input{appearance:none;width:18px;height:18px;border:1.5px solid var(--ink);margin:0;display:grid;place-items:center;cursor:pointer}
+.chk input:checked{background:var(--accent);border-color:var(--accent)}
+.chk input:checked::after{content:"";width:9px;height:5px;border:solid #fff;border-width:0 0 2px 2px;transform:translateY(-1px) rotate(-45deg)}
+.chk small{color:var(--grey);font-size:14px;margin-left:auto;text-align:right}
+.sl{display:grid;grid-template-columns:1fr 46%;align-items:center;gap:12px;padding:7px 0;font-size:15px}
+.sw{justify-self:end;width:56px;height:18px;border:1px solid var(--ink);background:hsl(var(--h) 18% 62%)}
+.sl i{height:1px;background:var(--ink);position:relative}
+.sl i::after{content:"";position:absolute;top:-5px;left:var(--v);width:11px;height:11px;border-radius:50%;background:var(--ink)}
+details{margin-top:18px;border-top:1px solid var(--hair)}
+summary{cursor:pointer;padding:12px 0;font-weight:500;font-size:16px;list-style:none}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";float:right;font-weight:300}
+details[open] summary::after{content:"\2212"}
+.tools .sq .ph{background:repeating-linear-gradient(0deg,var(--fog) 0 10px,#eaeaea 10px 11px)}
+.tl{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:32px 18px}
+.tl p{margin:4px 0 0;color:var(--grey);font-size:15px}
+.tl ul{margin:8px 0 0;padding:0;list-style:none;font-size:14px;color:var(--grey);columns:2;column-gap:12px}
+.tl h3{font-weight:500;font-size:18px;margin:12px 0 0}
+footer{margin:120px 0 0;border-top:1px solid var(--ink);padding:22px 0 60px;display:flex;justify-content:space-between;color:var(--grey);font-size:15px}
+.idx{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:40px 18px}
+.idx a{text-decoration:none;display:block}
+.idx h3{font-weight:400;font-size:21px;margin:12px 0 2px;line-height:1.2}
+.idx p{margin:0;color:var(--grey);font-size:15px}
+@media (max-width:820px){.wrap{padding:0 18px}.renders{grid-template-columns:1fr 1fr}.renders .sq:last-child{display:none}
+ .facts{grid-template-columns:1fr 1fr}.how{grid-template-columns:1fr;gap:28px}.dlg{grid-template-columns:1fr}
+ .bar input{margin-left:0;width:100%}.side{max-height:none}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style></head><body><div class="wrap"><header class="top"><span>For Blender 5.2</span><span></span></header><div class="hero"><h1>Shaders and tools for Blender</h1><p class="lead">14 procedural material packs and a complete library – Smart Controls, wear presets, painted layers, decals, real displacement and Asset Browser libraries.</p></div><section><div class="idx"><a href="complete-shader-library/index.html"><div class="sq"><div class="ph"><span><b>Complete Procedural Shader Library</b>1080 × 1080</span></div></div><h3>Complete Procedural Shader Library</h3><p>Every pack, every tool, one add-on. 652 shaders.</p></a><a href="metal-shaders/index.html"><div class="sq"><img loading="lazy" src="metal-shaders/img/gr__brushed_silver.jpg" alt=""></div><h3>Metal Shaders</h3><p>Chrome, gold and brushed steel without a single texture. 34 shaders.</p></a><a href="wood-shaders/index.html"><div class="sq"><img loading="lazy" src="wood-shaders/img/kf__parquet.jpg" alt=""></div><h3>Wood Shaders</h3><p>Real wood, grown ring by ring. 16 shaders.</p></a><a href="automotive-shaders/index.html"><div class="sq"><div class="ph"><span><b>Automotive Shaders</b>1080 × 1080</span></div></div><h3>Automotive Shaders</h3><p>Showroom paint without a single texture. 21 shaders.</p></a><a href="ground-shaders/index.html"><div class="sq"><div class="ph"><span><b>Ground Shaders</b>1080 × 1080</span></div></div><h3>Ground Shaders</h3><p>The ground under everything. 18 shaders.</p></a><a href="plastic-rubber-foam-shaders/index.html"><div class="sq"><img loading="lazy" src="plastic-rubber-foam-shaders/img/gr__sponge_orange.jpg" alt=""></div><h3>Plastic, Rubber &amp; Foam Shaders</h3><p>Product-shot materials with tiny imperfections. 75 shaders.</p></a><a href="stone-concrete-ceramic-shaders/index.html"><div class="sq"><img loading="lazy" src="stone-concrete-ceramic-shaders/img/GRANULA_PRO_Recycled_Felt.jpg" alt=""></div><h3>Stone, Concrete &amp; Ceramic Shaders</h3><p>From raw concrete to porcelain. 68 shaders.</p></a><a href="glass-crystal-liquid-shaders/index.html"><div class="sq"><img loading="lazy" src="glass-crystal-liquid-shaders/img/ms__glass.jpg" alt=""></div><h3>Glass, Crystal &amp; Liquid Shaders</h3><p>Everything see-through. 57 shaders.</p></a><a href="fabric-fibre-shaders/index.html"><div class="sq"><img loading="lazy" src="fabric-fibre-shaders/img/gr__felt_recycled.jpg" alt=""></div><h3>Fabric &amp; Fibre Shaders</h3><p>Soft materials with real texture. 85 shaders.</p></a><a href="clay-craft-shaders/index.html"><div class="sq"><img loading="lazy" src="clay-craft-shaders/img/kw__plast_red.jpg" alt=""></div><h3>Clay &amp; Craft Shaders</h3><p>Plasticine you can almost touch. 51 shaders.</p></a><a href="organic-creature-shaders/index.html"><div class="sq"><img loading="lazy" src="organic-creature-shaders/img/ms__sponge.jpg" alt=""></div><h3>Organic &amp; Creature Shaders</h3><p>Skin that looks alive. 27 shaders.</p></a><a href="paper-cardboard-shaders/index.html"><div class="sq"><img loading="lazy" src="paper-cardboard-shaders/img/px__printer.jpg" alt=""></div><h3>Paper &amp; Cardboard Shaders</h3><p>Paper you can almost feel. 10 shaders.</p></a><a href="weather-ice-snow-rain-shaders/index.html"><div class="sq"><img loading="lazy" src="weather-ice-snow-rain-shaders/img/gl__ice_clear.jpg" alt=""></div><h3>Weather Shaders: Ice, Snow &amp; Rain</h3><p>Winter and rain in one click. 80 shaders.</p></a><a href="abstract-motion-shaders/index.html"><div class="sq"><img loading="lazy" src="abstract-motion-shaders/img/il__sunset_map.jpg" alt=""></div><h3>Abstract &amp; Motion Graphics Shaders</h3><p>Looks made for motion design. 67 shaders.</p></a><a href="stylized-npr-shaders/index.html"><div class="sq"><img loading="lazy" src="stylized-npr-shaders/img/il__cel_2.jpg" alt=""></div><h3>Stylized &amp; NPR Shaders</h3><p>Make 3D look drawn by hand. 43 shaders.</p></a><a href="chrome-type-kit-2/index.html"><div class="sq"><img loading="lazy" src="chrome-type-kit-2/img/mat_chrome.png" alt=""></div><h3>Chrome Type Kit 2</h3><p>Type, paint or convert meshes into chrome.</p></a></div></section><footer><span>Blender 5.2</span><span></span></footer></div></body></html>

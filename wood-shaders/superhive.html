@@ -1,0 +1,75 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Wood Shaders</title><style>
+:root{--bg:#121216;--panel:#0b0b0e;--ink:#f3f3f5;--dim:#a3a3ad;--line:#2a2a31;--chip:#1d1d23;--accent:#ff8a4c}
+*{box-sizing:border-box}html,body{margin:0;background:transparent}
+body{font:400 15px/1.5 Inter,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased}
+.card{background:var(--bg);border-radius:18px;padding:18px;max-width:1180px;margin:0 auto}
+.main{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(0,1fr);gap:22px}
+.stage{position:relative;aspect-ratio:16/9;background:var(--panel);border-radius:14px;overflow:hidden}
+.stage img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.ph{position:absolute;inset:0;display:grid;place-items:center;text-align:center;color:var(--dim);font-size:13px;
+ background:repeating-linear-gradient(135deg,#101014 0 16px,#16161b 16px 17px)}
+.ph b{display:block;color:var(--ink);font-weight:600;font-size:16px;margin-bottom:4px}
+.ph code{display:block;margin-top:6px;font:12px ui-monospace,Consolas,monospace;color:#7d7d88}
+.nav{position:absolute;top:50%;transform:translateY(-50%);width:44px;height:44px;border-radius:50%;border:1px solid rgba(255,255,255,.18);
+ background:rgba(18,18,22,.55);color:#fff;font-size:20px;cursor:pointer;display:grid;place-items:center;backdrop-filter:blur(6px)}
+.nav:hover{background:rgba(40,40,48,.8)}.prev{left:12px}.next{right:12px}
+.count{position:absolute;left:12px;bottom:12px;background:rgba(18,18,22,.6);padding:3px 10px;border-radius:12px;font-size:13px;color:#ddd;
+ font-variant-numeric:tabular-nums}
+.info{display:flex;flex-direction:column;min-width:0}
+.pill{align-self:flex-start;border:1px solid var(--accent);color:var(--accent);border-radius:14px;padding:3px 12px;font-size:13px;
+ letter-spacing:.06em;text-transform:uppercase}
+h2{font-size:30px;line-height:1.15;margin:14px 0 8px;font-weight:700}
+.desc{color:#d4d4da;font-size:17px;margin:0 0 14px}
+.tags{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 18px}
+.tags span{background:var(--chip);color:var(--dim);border-radius:14px;padding:4px 12px;font-size:13px}
+h4{margin:6px 0 10px;font-size:13px;letter-spacing:.1em;color:var(--dim);font-weight:600;text-transform:uppercase}
+.ctl{display:grid;grid-template-columns:1fr 1fr;gap:6px 18px;margin:0 0 18px;padding:0;list-style:none}
+.ctl li{position:relative;padding-left:16px;color:#cfcfd6;font-size:15px}
+.ctl li::before{content:"";position:absolute;left:0;top:.62em;width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.every{display:flex;flex-wrap:wrap;gap:6px 18px;color:var(--dim);margin:0 0 14px}.every b{color:var(--ink);font-weight:600}
+.foot{margin-top:auto;display:flex;justify-content:space-between;gap:12px;color:var(--dim);font-size:13px;flex-wrap:wrap}
+.foot a{color:var(--dim);text-decoration:none}.foot a:hover{color:var(--ink)}
+.cats{display:flex;gap:8px;overflow-x:auto;margin:18px 0 12px;padding-bottom:4px;scrollbar-width:thin}
+.cats button{flex:none;font:inherit;font-size:14px;color:var(--dim);background:transparent;border:1px solid var(--line);border-radius:18px;padding:6px 14px;cursor:pointer}
+.cats button:hover{color:var(--ink)}
+.cats button[aria-pressed=true]{background:var(--ink);color:#111;border-color:var(--ink)}
+.cats small{opacity:.6;margin-left:4px}
+.strip{display:flex;gap:10px;overflow-x:auto;padding:2px 2px 8px;scroll-behavior:smooth;scrollbar-width:thin}
+.th{flex:none;width:118px;aspect-ratio:16/9;border-radius:10px;overflow:hidden;border:2px solid transparent;background:var(--panel);
+ cursor:pointer;padding:0;position:relative}
+.th img{width:100%;height:100%;object-fit:cover;display:block}
+.th .ph{font-size:10px}.th .ph b{font-size:11px;font-weight:500}
+.th[aria-current=true]{border-color:var(--accent)}
+.th:focus-visible,.cats button:focus-visible,.nav:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.card{overflow:hidden}.info,.stage{min-width:0}
+@media (max-width:760px){.main{grid-template-columns:minmax(0,1fr)}h2{font-size:24px}.desc{font-size:15px}.card{padding:12px;border-radius:14px}}
+@media (prefers-reduced-motion:reduce){.strip{scroll-behavior:auto}}
+</style></head><body><div class="card"><div class="main"><div class="stage" id="stage"><button class="nav prev" id="prev" aria-label="Previous">&#8249;</button><button class="nav next" id="next" aria-label="Next">&#8250;</button><span class="count" id="count"></span></div><div class="info"><span class="pill" id="pill"></span><h2 id="name"></h2><p class="desc" id="desc"></p><div class="tags" id="tags"></div><h4 id="ctlh">Controls</h4><ul class="ctl" id="ctl"></ul><h4>Every material</h4><div class="every"><span><b>100%</b> procedural</span><span id="eng"></span><span><b>Blender</b> 5.2+</span></div><div class="foot"><span>Wood Shaders · 16 procedural materials</span><a href="index.html" target="_blank" rel="noopener">Full showcase ↗</a></div></div></div><nav class="cats" id="cats" aria-label="Categories"></nav><div class="strip" id="strip"></div></div><script type="application/json" id="d">{"items": [{"name": "Block Parquet", "cat": "Architecture", "desc": "Wood blocks with grain running both ways", "tags": ["Architecture", "real displacement", "EEVEE + Cycles", "Edge Wear", "Scratches"], "controls": ["Scale", "Variation", "Panel Size", "Levels", "Stop Chance", "Split Variation", "Face Aware", "Line Width"], "cycles": false, "img": "img/kf__parquet.jpg", "hd": "img/1080/kf__parquet.jpg"}, {"name": "Oak Wood", "cat": "Nature & Organic", "desc": "Varnished oak", "tags": ["Nature & Organic", "real displacement", "EEVEE + Cycles", "Edge Wear", "Scratches"], "controls": ["Scale", "Variation", "Light Wood", "Dark Wood", "Rings", "Varnish", "Micro Bump", "Bump Strength"], "cycles": false, "img": "img/ms__wood_oak.jpg", "hd": "img/1080/ms__wood_oak.jpg"}, {"name": "Walnut Wood", "cat": "Nature & Organic", "desc": "Dark polished walnut", "tags": ["Nature & Organic", "real displacement", "EEVEE + Cycles", "Edge Wear", "Scratches"], "controls": ["Scale", "Variation", "Light Wood", "Dark Wood", "Rings", "Varnish", "Micro Bump", "Bump Strength"], "cycles": false, "img": "img/ms__wood_walnut.jpg", "hd": "img/1080/ms__wood_walnut.jpg"}, {"name": "Tree Bark", "cat": "Nature & Organic", "desc": "Rough bark", "tags": ["Nature & Organic", "real displacement", "EEVEE + Cycles", "Edge Wear", "Scratches"], "controls": ["Scale", "Variation", "Color", "Micro Bump", "Bump Strength"], "cycles": false, "img": "img/ms__bark.jpg", "hd": "img/1080/ms__bark.jpg"}, {"name": "Oak Floor", "cat": "Hardwood", "desc": "Natural oak planks, satin finish, open pores and ray fleck", "tags": ["Hardwood", "real displacement", "EEVEE + Cycles", "Edge Wear", "Scratches"], "controls": ["Scale", "Variation", "Early Wood", "Late Wood", "Stain", "Ring Density", "Ring Wobble", "Pores"], "cycles": false, "img": "img/px__oak_floor.jpg", "hd": "img/1080/px__oak_floor.jpg"}, {"name": "Walnut Planks", "cat": "Hardwood", "desc": "Dark walnut, wide boards, oiled sheen", "tags": ["Hardwood", "real displacement", "EEVEE + Cycles", "Edge Wear", "Scratches"], "controls": ["Scale", "Variation", "Early Wood", "Late Wood", "Stain", "Ring Density", "Ring Wobble", "Pores"], "cycles": false, "img": "img/px__walnut.jpg", "hd": "img/1080/px__walnut.jpg"}, {"name": "Ash Table Top", "cat": "Hardwood", "desc": "One solid piece of pale ash with cathedral grain", "tags": ["Hardwood", "real displacement", "EEVEE + Cycles", "Edge Wear", "Scratches"], "controls": ["Scale", "Variation", "Early Wood", "Late Wood", "Stain", "Ring Density", "Ring Wobble", "Pores"], "cycles": false, "img": "img/px__ash_table.jpg", "hd": "img/1080/px__ash_table.jpg"}, {"name": "Rustic Pine Boards", "cat": "Hardwood", "desc": "Knotty pine, worn and raw", "tags": ["Hardwood", "real displacement", "EEVEE + Cycles", "Edge Wear", "Scratches"], "controls": ["Scale", "Variation", "Early Wood", "Late Wood", "Stain", "Ring Density", "Ring Wobble", "Pores"], "cycles": false, "img": "img/px__pine_rustic.jpg", "hd": "img/1080/px__pine_rustic.jpg"}, {"name": "Smoked Oak Varnish", "cat": "Hardwood", "desc": "Dark smoked oak, short boards, high gloss", "tags": ["Hardwood", "real displacement", "EEVEE + Cycles", "Edge Wear", "Scratches"], "controls": ["Scale", "Variation", "Early Wood", "Late Wood", "Stain", "Ring Density", "Ring Wobble", "Pores"], "cycles": false, "img": "img/px__herring_dark.jpg", "hd": "img/1080/px__herring_dark.jpg"}, {"name": "Shou Sugi Ban", "cat": "Hardwood", "desc": "Charred Japanese cladding: alligator cracks, raised grain", "tags": ["Hardwood", "real displacement", "EEVEE + Cycles", "Edge Wear", "Scratches"], "controls": ["Scale", "Variation", "Early Wood", "Late Wood", "Stain", "Ring Density", "Ring Wobble", "Pores"], "cycles": false, "img": "img/px__charred.jpg", "hd": "img/1080/px__charred.jpg"}, {"name": "Maple", "cat": "Hardwood", "desc": "Pale, fine maple, almost no pores", "tags": ["Hardwood", "real displacement", "EEVEE + Cycles", "Edge Wear", "Scratches"], "controls": ["Scale", "Variation", "Early Wood", "Late Wood", "Stain", "Ring Density", "Ring Wobble", "Pores"], "cycles": false, "img": "img/px__maple.jpg", "hd": "img/1080/px__maple.jpg"}, {"name": "Cherry", "cat": "Hardwood", "desc": "Warm reddish cherry, satin varnish", "tags": ["Hardwood", "real displacement", "EEVEE + Cycles", "Edge Wear", "Scratches"], "controls": ["Scale", "Variation", "Early Wood", "Late Wood", "Stain", "Ring Density", "Ring Wobble", "Pores"], "cycles": false, "img": "img/px__cherry.jpg", "hd": "img/1080/px__cherry.jpg"}, {"name": "Teak Deck", "cat": "Hardwood", "desc": "Oiled teak boat deck with dark seams", "tags": ["Hardwood", "real displacement", "EEVEE + Cycles", "Edge Wear", "Scratches"], "controls": ["Scale", "Variation", "Early Wood", "Late Wood", "Stain", "Ring Density", "Ring Wobble", "Pores"], "cycles": false, "img": "img/px__teak.jpg", "hd": "img/1080/px__teak.jpg"}, {"name": "Weathered Barn Wood", "cat": "Hardwood", "desc": "Silver-grey sun-bleached boards", "tags": ["Hardwood", "real displacement", "EEVEE + Cycles", "Edge Wear", "Scratches"], "controls": ["Scale", "Variation", "Early Wood", "Late Wood", "Stain", "Ring Density", "Ring Wobble", "Pores"], "cycles": false, "img": "img/px__barn.jpg", "hd": "img/1080/px__barn.jpg"}, {"name": "Painted Planks White", "cat": "Hardwood", "desc": "White painted boards, chipped", "tags": ["Hardwood", "real displacement", "EEVEE + Cycles", "Edge Wear", "Scratches"], "controls": ["Scale", "Variation", "Early Wood", "Late Wood", "Stain", "Ring Density", "Ring Wobble", "Pores"], "cycles": false, "img": "img/px__painted_white.jpg", "hd": "img/1080/px__painted_white.jpg"}, {"name": "Painted Wood Shabby Blue", "cat": "Hardwood", "desc": "Shabby-chic blue paint over pine", "tags": ["Hardwood", "real displacement", "EEVEE + Cycles", "Edge Wear", "Scratches"], "controls": ["Scale", "Variation", "Early Wood", "Late Wood", "Stain", "Ring Density", "Ring Wobble", "Pores"], "cycles": false, "img": "img/px__painted_blue.jpg", "hd": "img/1080/px__painted_blue.jpg"}], "cats": ["Architecture", "Hardwood", "Nature & Organic"]}</script><script>
+const D=JSON.parse(document.getElementById('d').textContent);
+const $=s=>document.querySelector(s), esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+let cat='All', list=D.items, i=0;
+function ph(m,small){return `<div class="ph"><span><b>${esc(m.name)}</b>${small?'':'1920 × 1080 render'}${small?'':`<code>${esc(m.hd)}</code>`}</span></div>`}
+// 1080p render first, then the existing preview, then a placeholder naming the file to render
+function pic(m,small){const srcs=[m.hd,m.img].filter(Boolean);if(!srcs.length)return ph(m,small);
+ return `<img alt="${esc(m.name)}" ${small?'loading="lazy"':''} src="${esc(srcs[0])}" data-alt="${esc(srcs[1]||'')}"
+  onerror="if(this.dataset.alt){this.src=this.dataset.alt;this.dataset.alt=''}else{this.outerHTML=this.parentNode.dataset.ph}">`}
+function show(n){if(!list.length)return;i=(n+list.length)%list.length;const m=list[i];
+ const st=$('#stage');st.dataset.ph=ph(m);st.querySelectorAll('img,.ph').forEach(e=>e.remove());st.insertAdjacentHTML('afterbegin',pic(m));
+ $('#count').textContent=String(i+1).padStart(2,'0')+' / '+String(list.length).padStart(2,'0');
+ $('#pill').textContent=m.cat;$('#name').textContent=m.name;$('#desc').textContent=m.desc;
+ $('#tags').innerHTML=m.tags.map(t=>`<span>${esc(t)}</span>`).join('');
+ $('#ctl').innerHTML=m.controls.map(c=>`<li>${esc(c)}</li>`).join('');$('#ctlh').hidden=!m.controls.length;
+ $('#eng').innerHTML=m.cycles?'<b>Cycles</b>':'<b>Cycles</b> + EEVEE';
+ document.querySelectorAll('.th').forEach((b,k)=>{const on=k===i;b.setAttribute('aria-current',on);if(on)b.scrollIntoView({block:'nearest',inline:'center'})});
+ [1,-1].forEach(d=>{const n2=list[(i+d+list.length)%list.length];if(n2&&n2.hd){const im=new Image();im.src=n2.hd}})}
+function strip(){const s=$('#strip');s.innerHTML=list.map((m,k)=>`<button class="th" aria-label="${esc(m.name)}" data-k="${k}" data-ph="${esc(ph(m,1))}">${pic(m,1)}</button>`).join('');
+ s.querySelectorAll('.th').forEach(b=>b.onclick=()=>show(+b.dataset.k))}
+function cats(){const c=$('#cats');const names=['All',...D.cats];
+ c.innerHTML=names.map(n=>`<button aria-pressed="${n===cat}" data-c="${esc(n)}">${esc(n)}<small>${n==='All'?D.items.length:D.items.filter(m=>m.cat===n).length}</small></button>`).join('');
+ c.querySelectorAll('button').forEach(b=>b.onclick=()=>{cat=b.dataset.c;list=cat==='All'?D.items:D.items.filter(m=>m.cat===cat);cats();strip();show(0)})}
+$('#prev').onclick=()=>show(i-1);$('#next').onclick=()=>show(i+1);
+document.addEventListener('keydown',e=>{if(e.key==='ArrowLeft')show(i-1);if(e.key==='ArrowRight')show(i+1)});
+let tx=null;$('#stage').addEventListener('touchstart',e=>tx=e.touches[0].clientX,{passive:true});
+$('#stage').addEventListener('touchend',e=>{if(tx===null)return;const dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>40)show(i+(dx<0?1:-1));tx=null});
+cats();strip();show(0);
+</script></body></html>

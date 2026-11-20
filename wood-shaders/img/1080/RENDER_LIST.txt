@@ -1,0 +1,19 @@
+Wood Shaders: one 1920 x 1080 JPG per shader, named exactly like this, in this folder.
+Until a file exists the embed shows the old preview or a placeholder.
+
+kf__parquet.jpg    Block Parquet  (Architecture)
+ms__wood_oak.jpg    Oak Wood  (Nature & Organic)
+ms__wood_walnut.jpg    Walnut Wood  (Nature & Organic)
+ms__bark.jpg    Tree Bark  (Nature & Organic)
+px__oak_floor.jpg    Oak Floor  (Hardwood)
+px__walnut.jpg    Walnut Planks  (Hardwood)
+px__ash_table.jpg    Ash Table Top  (Hardwood)
+px__pine_rustic.jpg    Rustic Pine Boards  (Hardwood)
+px__herring_dark.jpg    Smoked Oak Varnish  (Hardwood)
+px__charred.jpg    Shou Sugi Ban  (Hardwood)
+px__maple.jpg    Maple  (Hardwood)
+px__cherry.jpg    Cherry  (Hardwood)
+px__teak.jpg    Teak Deck  (Hardwood)
+px__barn.jpg    Weathered Barn Wood  (Hardwood)
+px__painted_white.jpg    Painted Planks White  (Hardwood)
+px__painted_blue.jpg    Painted Wood Shabby Blue  (Hardwood)

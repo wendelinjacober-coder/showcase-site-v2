@@ -1,0 +1,21 @@
+Ground Shaders: one 1920 x 1080 JPG per shader, named exactly like this, in this folder.
+Until a file exists the embed shows the old preview or a placeholder.
+
+nx__soil_garden.jpg    Garden Soil  (Soil & Mud)
+nx__soil_dry.jpg    Dry Soil  (Soil & Mud)
+nx__soil_wet.jpg    Wet Soil  (Soil & Mud)
+nx__mud.jpg    Mud  (Soil & Mud)
+nx__red_earth.jpg    Red Earth  (Soil & Mud)
+nx__forest_autumn.jpg    Autumn Forest Floor  (Forest Floor)
+nx__forest_green.jpg    Mossy Forest Floor  (Forest Floor)
+nx__cracked_earth.jpg    Cracked Earth  (Cracked Earth)
+nx__cracked_clay.jpg    Cracked Red Clay  (Cracked Earth)
+nx__salt_flat.jpg    Salt Flat  (Cracked Earth)
+nx__sand_beach.jpg    Beach Sand  (Sand & Gravel)
+nx__sand_wet.jpg    Wet Beach Sand  (Sand & Gravel)
+nx__sand_desert.jpg    Desert Sand  (Sand & Gravel)
+nx__gravel_grey.jpg    Gravel  (Sand & Gravel)
+nx__gravel_pea.jpg    Pea Gravel  (Sand & Gravel)
+nx__gravel_river.jpg    River Stones  (Sand & Gravel)
+nx__dirt_road.jpg    Dirt Road  (Roads & Paths)
+nx__dirt_road_dry.jpg    Dry Dirt Track  (Roads & Paths)

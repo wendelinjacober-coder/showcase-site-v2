@@ -1,0 +1,112 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Ground Shaders</title><meta name="description" content="The ground under everything."><style>
+@import url('https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500&display=swap');
+:root{--paper:#ffffff;--ink:#000000;--grey:#6e6e6e;--hair:#e3e3e3;--fog:#f4f4f4;--accent:#1f2bff}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font:400 17px/1.55 Jost,Futura,"Century Gothic","Avenir Next",sans-serif}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.wrap{max-width:1320px;margin:0 auto;padding:0 32px}
+.top{display:flex;justify-content:space-between;align-items:baseline;padding:28px 0;font-size:15px;color:var(--grey)}
+.top a{text-decoration:none}.top a:hover{color:var(--ink)}
+.hero{padding:72px 0 40px}
+.hero h1{font-weight:300;font-size:clamp(44px,8.4vw,128px);line-height:.95;letter-spacing:-.035em;margin:0;max-width:11ch}
+.hero .lead{font-size:clamp(19px,2vw,24px);font-weight:300;max-width:38ch;margin:36px 0 0}
+.hero .sub{color:var(--grey);max-width:60ch;margin:14px 0 0}
+.renders{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:56px 0 0}
+.sq{aspect-ratio:1/1;background:var(--fog);position:relative;overflow:hidden}
+.sq img{width:100%;height:100%;object-fit:cover;display:block}
+.ph{position:absolute;inset:0;display:grid;place-items:center;text-align:center;color:var(--grey);font-size:14px;
+ background:repeating-linear-gradient(135deg,var(--fog) 0 14px,#ececec 14px 15px)}
+.ph b{display:block;font-weight:500;color:var(--ink);font-size:15px}
+.facts{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--ink);margin:88px 0 0}
+.facts div{padding:18px 18px 0 0}
+.facts strong{display:block;font-weight:300;font-size:44px;line-height:1;letter-spacing:-.02em}
+.facts span{color:var(--grey);font-size:15px}
+section{padding:104px 0 0}
+h2{font-weight:300;font-size:clamp(30px,3.6vw,48px);letter-spacing:-.02em;line-height:1.05;margin:0 0 12px}
+.intro{color:var(--grey);max-width:62ch;margin:0 0 36px}
+.how{display:grid;grid-template-columns:1fr 1fr;gap:56px}
+.how h3{font-weight:500;font-size:19px;margin:0 0 8px}
+.how p{margin:0;color:var(--grey);max-width:52ch}
+.bar{display:flex;flex-wrap:wrap;gap:6px 22px;align-items:center;border-bottom:1px solid var(--hair);padding:0 0 14px;margin:0 0 28px}
+.bar button{font:inherit;font-size:16px;background:none;border:0;padding:4px 0;color:var(--grey);cursor:pointer;border-bottom:2px solid transparent}
+.bar button[aria-pressed=true]{color:var(--ink);border-color:var(--accent)}
+.bar input{margin-left:auto;font:inherit;font-size:16px;border:0;border-bottom:1px solid var(--ink);padding:4px 0;width:200px;background:none}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:28px 16px}
+.tile{all:unset;cursor:pointer;display:block}
+.tile .sq{transition:transform .25s}
+.tile:hover .sq{transform:scale(.97)}
+.tile:focus-visible{outline:2px solid var(--accent);outline-offset:4px}
+.tile .nm{display:block;margin-top:10px;font-size:16px;line-height:1.3}
+.tile .ct{display:block;color:var(--grey);font-size:14px}
+.empty{color:var(--grey);padding:40px 0}
+dialog{border:0;padding:0;max-width:1080px;width:calc(100% - 40px);background:var(--paper);color:var(--ink)}
+dialog::backdrop{background:rgba(255,255,255,.92)}
+.dlg{display:grid;grid-template-columns:1.05fr 1fr;border:1px solid var(--ink)}
+.dlg .sq{aspect-ratio:1/1}
+.side{padding:30px 32px;max-height:min(86vh,560px);overflow:auto}
+.side h3{font-weight:300;font-size:34px;letter-spacing:-.02em;line-height:1.05;margin:0}
+.side .d{color:var(--grey);margin:8px 0 0}
+.side .eng{display:inline-block;margin-top:12px;font-size:14px;border:1px solid var(--ink);padding:1px 8px}
+.close{position:absolute;right:14px;top:10px;font:inherit;font-size:28px;font-weight:300;background:none;border:0;cursor:pointer;line-height:1}
+.ctl{margin-top:26px}
+.ctl h4{font-weight:500;font-size:16px;margin:0 0 10px;padding-bottom:8px;border-bottom:1px solid var(--ink)}
+.chk{display:flex;align-items:center;gap:12px;padding:6px 0;font-size:16px;cursor:pointer}
+.chk input{appearance:none;width:18px;height:18px;border:1.5px solid var(--ink);margin:0;display:grid;place-items:center;cursor:pointer}
+.chk input:checked{background:var(--accent);border-color:var(--accent)}
+.chk input:checked::after{content:"";width:9px;height:5px;border:solid #fff;border-width:0 0 2px 2px;transform:translateY(-1px) rotate(-45deg)}
+.chk small{color:var(--grey);font-size:14px;margin-left:auto;text-align:right}
+.sl{display:grid;grid-template-columns:1fr 46%;align-items:center;gap:12px;padding:7px 0;font-size:15px}
+.sw{justify-self:end;width:56px;height:18px;border:1px solid var(--ink);background:hsl(var(--h) 18% 62%)}
+.sl i{height:1px;background:var(--ink);position:relative}
+.sl i::after{content:"";position:absolute;top:-5px;left:var(--v);width:11px;height:11px;border-radius:50%;background:var(--ink)}
+details{margin-top:18px;border-top:1px solid var(--hair)}
+summary{cursor:pointer;padding:12px 0;font-weight:500;font-size:16px;list-style:none}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";float:right;font-weight:300}
+details[open] summary::after{content:"\2212"}
+.tools .sq .ph{background:repeating-linear-gradient(0deg,var(--fog) 0 10px,#eaeaea 10px 11px)}
+.tl{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:32px 18px}
+.tl p{margin:4px 0 0;color:var(--grey);font-size:15px}
+.tl ul{margin:8px 0 0;padding:0;list-style:none;font-size:14px;color:var(--grey);columns:2;column-gap:12px}
+.tl h3{font-weight:500;font-size:18px;margin:12px 0 0}
+footer{margin:120px 0 0;border-top:1px solid var(--ink);padding:22px 0 60px;display:flex;justify-content:space-between;color:var(--grey);font-size:15px}
+.idx{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:40px 18px}
+.idx a{text-decoration:none;display:block}
+.idx h3{font-weight:400;font-size:21px;margin:12px 0 2px;line-height:1.2}
+.idx p{margin:0;color:var(--grey);font-size:15px}
+@media (max-width:820px){.wrap{padding:0 18px}.renders{grid-template-columns:1fr 1fr}.renders .sq:last-child{display:none}
+ .facts{grid-template-columns:1fr 1fr}.how{grid-template-columns:1fr;gap:28px}.dlg{grid-template-columns:1fr}
+ .bar input{margin-left:0;width:100%}.side{max-height:none}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style></head><body><div class="wrap"><header class="top"><span>For Blender 5.2</span><a href="../index.html">All products</a></header><div class="hero"><h1>Ground Shaders</h1><p class="lead">The ground under everything.</p><p class="sub">Crumbly soil and mud, a leafy forest floor, cracked earth, beach and desert sand with wind ripples, gravel and dirt roads – with real displacement.</p><div class="renders"><div class="sq"><img src="img/hero-1.jpg" alt="Render 1" onerror="this.outerHTML='&lt;div class=&quot;ph&quot;&gt;&lt;span&gt;&lt;b&gt;Render 1&lt;/b&gt;1080 × 1080&lt;/span&gt;&lt;/div&gt;'"></div><div class="sq"><img src="img/hero-2.jpg" alt="Render 2" onerror="this.outerHTML='&lt;div class=&quot;ph&quot;&gt;&lt;span&gt;&lt;b&gt;Render 2&lt;/b&gt;1080 × 1080&lt;/span&gt;&lt;/div&gt;'"></div><div class="sq"><img src="img/hero-3.jpg" alt="Render 3" onerror="this.outerHTML='&lt;div class=&quot;ph&quot;&gt;&lt;span&gt;&lt;b&gt;Render 3&lt;/b&gt;1080 × 1080&lt;/span&gt;&lt;/div&gt;'"></div></div><div class="facts"><div><strong>18</strong><span>shaders</span></div><div><strong>5</strong><span>categories</span></div><div><strong>18</strong><span>with real displacement</span></div><div><strong>4</strong><span>wear presets</span></div></div></div><section><h2>How it works</h2><div class="how"><div><h3>Smart Controls</h3><p>The handful of sliders that matter for this exact shader, plus Variation: a soft, large-scale colour and gloss shift that breaks the clean CG look of a perfect surface.</p></div><div><h3>Surface layers and wear</h3><p>Edge Wear, Cavity Dirt, Dust, Wet, Rust, Moss, Scratches and Fingerprints, each tuned to the material: bare metal in its own colour, see-through smudges on glass, whitened scuffs on plastic. One click presets: Clean, Used, Old, Weathered.</p></div><div><h3>Paint where it goes</h3><p>Paint any layer by hand in Vertex Paint: white adds it, black removes it. The procedural detail stays inside your strokes.</p></div><div><h3>Decals</h3><p>Project logos, labels and stickers onto any object with a movable image empty. Opacity, gloss and metal per decal; dirt and dust lie on top.</p></div><div><h3>Real-world scale</h3><p>A brick is a brick on a cup and on a wall. Switch to fit-to-object at any time. Mapping: Object, Sticky (glued to animated meshes) or UV (follows your unwrap).</p></div><div><h3>Real displacement</h3><p>Real geometry where the relief is deep enough to see, matched to each shader&#x27;s own bump, with adaptive subdivision and Micro Detail. Shallow relief stays fast bump.</p></div><div><h3>Asset Browser</h3><p>Every shader also sits in Blender&#x27;s Asset Browser, sorted by category, ready to drag and drop. No UVs, no image textures.</p></div></div></section><section><h2>Browse the shaders</h2><p class="intro">Open any shader to see its Smart Controls and All Controls exactly as they appear in Blender.</p><div class="bar" id="bar"><input id="q" type="search" placeholder="Search" aria-label="Search"></div><div class="grid" id="grid"></div></section><footer><span>Ground Shaders</span><span>Blender 5.2, EEVEE and Cycles</span></footer></div><dialog id="dlg" aria-label="Shader details"><div class="dlg"><div class="sq pic"></div><div class="side"></div></div><form method="dialog"><button class="close" aria-label="Close">×</button></form></dialog><script type="application/json" id="data">{"items": [{"id": "nx__soil_garden", "name": "Garden Soil", "cat": "Soil & Mud", "pack": "ground", "desc": "Dark, crumbly garden soil", "smart": ["Scale", "Variation", "Soil Color", "Dry Color", "Pebbles", "Moisture", "Puddles", "Micro Bump", "Bump Strength"], "all": ["Micro Scale", "Seed", "Hue Shift", "Saturation", "Brightness", "Roughness Offset", "Dirt", "Wetness"], "disp": true, "disp_on": true, "cycles": false, "overlay": false, "layers": [["moss", "Moss"], ["dust", "Dust"], ["wet", "Wet"]], "file": "nx__soil_garden", "img": ""}, {"id": "nx__soil_dry", "name": "Dry Soil", "cat": "Soil & Mud", "pack": "ground", "desc": "Dry, dusty field soil", "smart": ["Scale", "Variation", "Soil Color", "Dry Color", "Pebbles", "Moisture", "Puddles", "Micro Bump", "Bump Strength"], "all": ["Micro Scale", "Seed", "Hue Shift", "Saturation", "Brightness", "Roughness Offset", "Dirt", "Wetness"], "disp": true, "disp_on": true, "cycles": false, "overlay": false, "layers": [["moss", "Moss"], ["dust", "Dust"], ["wet", "Wet"]], "file": "nx__soil_dry", "img": ""}, {"id": "nx__soil_wet", "name": "Wet Soil", "cat": "Soil & Mud", "pack": "ground", "desc": "Freshly watered soil", "smart": ["Scale", "Variation", "Soil Color", "Dry Color", "Pebbles", "Moisture", "Puddles", "Micro Bump", "Bump Strength"], "all": ["Micro Scale", "Seed", "Hue Shift", "Saturation", "Brightness", "Roughness Offset", "Dirt", "Wetness"], "disp": true, "disp_on": true, "cycles": false, "overlay": false, "layers": [["moss", "Moss"], ["dust", "Dust"], ["wet", "Wet"]], "file": "nx__soil_wet", "img": ""}, {"id": "nx__mud", "name": "Mud", "cat": "Soil & Mud", "pack": "ground", "desc": "Wet mud with puddles", "smart": ["Scale", "Variation", "Soil Color", "Dry Color", "Pebbles", "Moisture", "Puddles", "Micro Bump", "Bump Strength"], "all": ["Micro Scale", "Seed", "Hue Shift", "Saturation", "Brightness", "Roughness Offset", "Dirt", "Wetness"], "disp": true, "disp_on": true, "cycles": false, "overlay": false, "layers": [["moss", "Moss"], ["dust", "Dust"], ["wet", "Wet"]], "file": "nx__mud", "img": ""}, {"id": "nx__red_earth", "name": "Red Earth", "cat": "Soil & Mud", "pack": "ground", "desc": "Iron-rich red soil", "smart": ["Scale", "Variation", "Soil Color", "Dry Color", "Pebbles", "Moisture", "Puddles", "Micro Bump", "Bump Strength"], "all": ["Micro Scale", "Seed", "Hue Shift", "Saturation", "Brightness", "Roughness Offset", "Dirt", "Wetness"], "disp": true, "disp_on": true, "cycles": false, "overlay": false, "layers": [["moss", "Moss"], ["dust", "Dust"], ["wet", "Wet"]], "file": "nx__red_earth", "img": ""}, {"id": "nx__forest_autumn", "name": "Autumn Forest Floor", "cat": "Forest Floor", "pack": "ground", "desc": "Fallen brown and orange leaves, twigs and moss", "smart": ["Scale", "Variation", "Soil Color", "Leaves", "Moss", "Twigs", "Micro Bump", "Bump Strength"], "all": ["Micro Scale", "Seed", "Hue Shift", "Saturation", "Brightness", "Roughness Offset", "Dirt", "Wetness"], "disp": true, "disp_on": true, "cycles": false, "overlay": false, "layers": [["moss", "Moss"], ["dust", "Dust"], ["wet", "Wet"]], "file": "nx__forest_autumn", "img": ""}, {"id": "nx__forest_green", "name": "Mossy Forest Floor", "cat": "Forest Floor", "pack": "ground", "desc": "Damp floor, lots of moss", "smart": ["Scale", "Variation", "Soil Color", "Leaves", "Moss", "Twigs", "Micro Bump", "Bump Strength"], "all": ["Micro Scale", "Seed", "Hue Shift", "Saturation", "Brightness", "Roughness Offset", "Dirt", "Wetness"], "disp": true, "disp_on": true, "cycles": false, "overlay": false, "layers": [["moss", "Moss"], ["dust", "Dust"], ["wet", "Wet"]], "file": "nx__forest_green", "img": ""}, {"id": "nx__cracked_earth", "name": "Cracked Earth", "cat": "Cracked Earth", "pack": "ground", "desc": "Dry mud plates with deep cracks", "smart": ["Scale", "Variation", "Color", "Plate Size", "Micro Bump", "Bump Strength"], "all": ["Micro Scale", "Seed", "Hue Shift", "Saturation", "Brightness", "Roughness Offset", "Dirt", "Wetness"], "disp": true, "disp_on": true, "cycles": false, "overlay": false, "layers": [["moss", "Moss"], ["dust", "Dust"], ["wet", "Wet"]], "file": "nx__cracked_earth", "img": ""}, {"id": "nx__cracked_clay", "name": "Cracked Red Clay", "cat": "Cracked Earth", "pack": "ground", "desc": "Red clay, smaller plates", "smart": ["Scale", "Variation", "Color", "Plate Size", "Micro Bump", "Bump Strength"], "all": ["Micro Scale", "Seed", "Hue Shift", "Saturation", "Brightness", "Roughness Offset", "Dirt", "Wetness"], "disp": true, "disp_on": true, "cycles": false, "overlay": false, "layers": [["moss", "Moss"], ["dust", "Dust"], ["wet", "Wet"]], "file": "nx__cracked_clay", "img": ""}, {"id": "nx__salt_flat", "name": "Salt Flat", "cat": "Cracked Earth", "pack": "ground", "desc": "White salt crust in large polygons", "smart": ["Scale", "Variation", "Color", "Plate Size", "Micro Bump", "Bump Strength"], "all": ["Micro Scale", "Seed", "Hue Shift", "Saturation", "Brightness", "Roughness Offset", "Dirt", "Wetness"], "disp": true, "disp_on": true, "cycles": false, "overlay": false, "layers": [["moss", "Moss"], ["dust", "Dust"], ["wet", "Wet"]], "file": "nx__salt_flat", "img": ""}, {"id": "nx__sand_beach", "name": "Beach Sand", "cat": "Sand & Gravel", "pack": "ground", "desc": "Fine beach sand with wind ripples and shells", "smart": ["Scale", "Variation", "Sand Color", "Ripples", "Ripple Size", "Shells", "Micro Bump", "Bump Strength"], "all": ["Wetness", "Micro Scale", "Seed", "Hue Shift", "Saturation", "Brightness", "Roughness Offset", "Dirt", "Wetness"], "disp": true, "disp_on": true, "cycles": false, "overlay": false, "layers": [["moss", "Moss"], ["dust", "Dust"], ["wet", "Wet"]], "file": "nx__sand_beach", "img": ""}, {"id": "nx__sand_wet", "name": "Wet Beach Sand", "cat": "Sand & Gravel", "pack": "ground", "desc": "Sand at the waterline", "smart": ["Scale", "Variation", "Sand Color", "Ripples", "Ripple Size", "Shells", "Micro Bump", "Bump Strength"], "all": ["Wetness", "Micro Scale", "Seed", "Hue Shift", "Saturation", "Brightness", "Roughness Offset", "Dirt", "Wetness"], "disp": true, "disp_on": true, "cycles": false, "overlay": false, "layers": [["moss", "Moss"], ["dust", "Dust"], ["wet", "Wet"]], "file": "nx__sand_wet", "img": ""}, {"id": "nx__sand_desert", "name": "Desert Sand", "cat": "Sand & Gravel", "pack": "ground", "desc": "Orange desert sand with strong ripples", "smart": ["Scale", "Variation", "Sand Color", "Ripples", "Ripple Size", "Shells", "Micro Bump", "Bump Strength"], "all": ["Wetness", "Micro Scale", "Seed", "Hue Shift", "Saturation", "Brightness", "Roughness Offset", "Dirt", "Wetness"], "disp": true, "disp_on": true, "cycles": false, "overlay": false, "layers": [["moss", "Moss"], ["dust", "Dust"], ["wet", "Wet"]], "file": "nx__sand_desert", "img": ""}, {"id": "nx__gravel_grey", "name": "Gravel", "cat": "Sand & Gravel", "pack": "ground", "desc": "Grey gravel, 2–3 cm stones", "smart": ["Scale", "Variation", "Stone Size", "Gap Color", "Micro Bump", "Bump Strength"], "all": ["Micro Scale", "Seed", "Hue Shift", "Saturation", "Brightness", "Roughness Offset", "Dirt", "Wetness"], "disp": true, "disp_on": true, "cycles": false, "overlay": false, "layers": [["moss", "Moss"], ["dust", "Dust"], ["wet", "Wet"]], "file": "nx__gravel_grey", "img": ""}, {"id": "nx__gravel_pea", "name": "Pea Gravel", "cat": "Sand & Gravel", "pack": "ground", "desc": "Small rounded warm stones", "smart": ["Scale", "Variation", "Stone Size", "Gap Color", "Micro Bump", "Bump Strength"], "all": ["Micro Scale", "Seed", "Hue Shift", "Saturation", "Brightness", "Roughness Offset", "Dirt", "Wetness"], "disp": true, "disp_on": true, "cycles": false, "overlay": false, "layers": [["moss", "Moss"], ["dust", "Dust"], ["wet", "Wet"]], "file": "nx__gravel_pea", "img": ""}, {"id": "nx__gravel_river", "name": "River Stones", "cat": "Sand & Gravel", "pack": "ground", "desc": "Large rounded river stones", "smart": ["Scale", "Variation", "Stone Size", "Gap Color", "Micro Bump", "Bump Strength"], "all": ["Micro Scale", "Seed", "Hue Shift", "Saturation", "Brightness", "Roughness Offset", "Dirt", "Wetness"], "disp": true, "disp_on": true, "cycles": false, "overlay": false, "layers": [["moss", "Moss"], ["dust", "Dust"], ["wet", "Wet"]], "file": "nx__gravel_river", "img": ""}, {"id": "nx__dirt_road", "name": "Dirt Road", "cat": "Roads & Paths", "pack": "ground", "desc": "Track with tyre ruts and puddles", "smart": ["Scale", "Variation", "Soil Color", "Track Width", "Puddles", "Micro Bump", "Bump Strength"], "all": ["Micro Scale", "Seed", "Hue Shift", "Saturation", "Brightness", "Roughness Offset", "Dirt", "Wetness"], "disp": true, "disp_on": true, "cycles": false, "overlay": false, "layers": [["moss", "Moss"], ["dust", "Dust"], ["wet", "Wet"]], "file": "nx__dirt_road", "img": ""}, {"id": "nx__dirt_road_dry", "name": "Dry Dirt Track", "cat": "Roads & Paths", "pack": "ground", "desc": "Dusty dry track", "smart": ["Scale", "Variation", "Soil Color", "Track Width", "Puddles", "Micro Bump", "Bump Strength"], "all": ["Micro Scale", "Seed", "Hue Shift", "Saturation", "Brightness", "Roughness Offset", "Dirt", "Wetness"], "disp": true, "disp_on": true, "cycles": false, "overlay": false, "layers": [["moss", "Moss"], ["dust", "Dust"], ["wet", "Wet"]], "file": "nx__dirt_road_dry", "img": ""}], "layers": []}</script><script>
+const D=JSON.parse(document.getElementById('data').textContent);
+const grid=document.getElementById('grid'),bar=document.getElementById('bar'),q=document.getElementById('q');
+let cat='All';
+const ph=(t)=>`<div class="ph"><span><b>${t}</b>Preview coming</span></div>`;
+const img=(src,alt)=>src?`<img loading="lazy" src="${src}" alt="${alt}" onerror="this.parentNode.classList.add('miss');this.outerHTML='${ph('Render').replace(/"/g,'&quot;')}'">`:ph('Render');
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function cats(){const c=['All',...new Set(D.items.map(m=>m.cat))];
+ bar.querySelectorAll('button').forEach(b=>b.remove());
+ c.forEach(n=>{const b=document.createElement('button');b.textContent=n;b.setAttribute('aria-pressed',n===cat);
+  b.onclick=()=>{cat=n;cats();draw()};bar.insertBefore(b,q)})}
+function draw(){const t=q.value.toLowerCase().trim();
+ const list=D.items.filter(m=>(cat==='All'||m.cat===cat)&&(!t||(m.name+' '+m.desc).toLowerCase().includes(t)));
+ grid.innerHTML=list.length?list.map((m,i)=>`<button class="tile" data-i="${D.items.indexOf(m)}"><div class="sq">${img(m.img,esc(m.name))}</div><span class="nm">${esc(m.name)}</span><span class="ct">${esc(m.cat)}</span></button>`).join(''):'<p class="empty">Nothing matches. Try another word or pick All.</p>';
+ grid.querySelectorAll('.tile').forEach(b=>b.onclick=()=>open_(D.items[+b.dataset.i]))}
+const seed=s=>{let h=0;for(const c of s)h=(h*31+c.charCodeAt(0))%997;return 15+h%70};
+const slider=n=>/colou?r|tint/i.test(n)?`<div class="sl"><span>${esc(n)}</span><em class="sw" style="--h:${seed(n)*4}"></em></div>`:`<div class="sl"><span>${esc(n)}</span><i style="--v:${seed(n)}%"></i></div>`;
+function open_(m){const dl=document.getElementById('dlg');
+ const boxes=[];
+ if(m.disp)boxes.push(`<label class="chk"><input type="checkbox" ${m.disp_on?'checked':''}>Displacement<small>${m.disp_on?'On by default':'Off by default'}</small></label>`);
+ (m.layers||D.layers).forEach(l=>boxes.push(`<label class="chk"><input type="checkbox">${esc(l[1])}</label>`));
+ const all=(m.all||[]);
+ dl.querySelector('.side').innerHTML=`<h3>${esc(m.name)}</h3><p class="d">${esc(m.desc||'')}</p>${m.cycles?'<span class="eng">Cycles only</span>':''}
+  <div class="ctl"><h4>Smart Controls</h4>${boxes.join('')}${(m.smart||[]).map(slider).join('')}</div>
+  ${all.length?`<details><summary>All Controls (${all.length})</summary>${all.map(slider).join('')}</details>`:''}`;
+ dl.querySelector('.pic').innerHTML=img(m.img,esc(m.name));
+ dl.showModal()}
+document.getElementById('dlg').addEventListener('click',e=>{if(e.target.id==='dlg')e.target.close()});
+q.oninput=draw;cats();draw();
+</script></body></html>

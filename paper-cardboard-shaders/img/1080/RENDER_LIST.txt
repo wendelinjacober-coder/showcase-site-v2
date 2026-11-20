@@ -1,0 +1,13 @@
+Paper & Cardboard Shaders: one 1920 x 1080 JPG per shader, named exactly like this, in this folder.
+Until a file exists the embed shows the old preview or a placeholder.
+
+px__printer.jpg    Printer Paper  (Paper & Cardboard)
+px__kraft.jpg    Kraft Paper  (Paper & Cardboard)
+px__cardboard.jpg    Cardboard  (Paper & Cardboard)
+px__corrugated.jpg    Corrugated Cardboard  (Paper & Cardboard)
+px__crumpled.jpg    Crumpled Paper  (Paper & Cardboard)
+px__watercolor.jpg    Watercolor Paper  (Paper & Cardboard)
+px__newsprint.jpg    Newsprint  (Paper & Cardboard)
+px__parchment.jpg    Old Parchment  (Paper & Cardboard)
+px__tissue.jpg    Tissue Paper  (Paper & Cardboard)
+px__origami.jpg    Folded Origami Paper  (Paper & Cardboard)
