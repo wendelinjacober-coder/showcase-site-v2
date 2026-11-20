@@ -1,48 +1,49 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Automotive Shaders</title><style>
-:root{--bg:#121216;--panel:#0b0b0e;--ink:#f3f3f5;--dim:#a3a3ad;--line:#2a2a31;--chip:#1d1d23;--accent:#ff8a4c}
-*{box-sizing:border-box}html,body{margin:0;background:transparent}
-body{font:400 15px/1.5 Inter,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased}
-.card{background:var(--bg);border-radius:18px;padding:18px;max-width:1180px;margin:0 auto}
-.main{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(0,1fr);gap:22px}
-.stage{position:relative;aspect-ratio:16/9;background:var(--panel);border-radius:14px;overflow:hidden}
+@import url('https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500&display=swap');
+:root{--paper:#ffffff;--ink:#000000;--grey:#6e6e6e;--hair:#e3e3e3;--fog:#f4f4f4;--accent:#1f2bff}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--paper)}
+body{font:400 16px/1.55 Jost,Futura,"Century Gothic","Avenir Next",sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.card{background:var(--paper);color:var(--ink);max-width:1320px;margin:0 auto;padding:0;overflow:hidden}
+.main{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(0,1fr);gap:40px;align-items:start}
+.stage{position:relative;aspect-ratio:16/9;background:var(--fog);overflow:hidden}
 .stage img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
-.ph{position:absolute;inset:0;display:grid;place-items:center;text-align:center;color:var(--dim);font-size:13px;
- background:repeating-linear-gradient(135deg,#101014 0 16px,#16161b 16px 17px)}
-.ph b{display:block;color:var(--ink);font-weight:600;font-size:16px;margin-bottom:4px}
-.ph code{display:block;margin-top:6px;font:12px ui-monospace,Consolas,monospace;color:#7d7d88}
-.nav{position:absolute;top:50%;transform:translateY(-50%);width:44px;height:44px;border-radius:50%;border:1px solid rgba(255,255,255,.18);
- background:rgba(18,18,22,.55);color:#fff;font-size:20px;cursor:pointer;display:grid;place-items:center;backdrop-filter:blur(6px)}
-.nav:hover{background:rgba(40,40,48,.8)}.prev{left:12px}.next{right:12px}
-.count{position:absolute;left:12px;bottom:12px;background:rgba(18,18,22,.6);padding:3px 10px;border-radius:12px;font-size:13px;color:#ddd;
- font-variant-numeric:tabular-nums}
+.ph{position:absolute;inset:0;display:grid;place-items:center;text-align:center;color:var(--grey);font-size:14px;
+ background:repeating-linear-gradient(135deg,var(--fog) 0 14px,#ececec 14px 15px)}
+.ph b{display:block;font-weight:500;color:var(--ink);font-size:15px;margin-bottom:4px}
+.ph code{display:block;margin-top:6px;font:12px ui-monospace,Consolas,monospace;color:var(--grey)}
+.nav{position:absolute;top:50%;transform:translateY(-50%);width:44px;height:44px;border-radius:0;border:1px solid var(--ink);
+ background:var(--paper);color:var(--ink);font:inherit;font-size:20px;cursor:pointer;display:grid;place-items:center}
+.nav:hover{background:var(--ink);color:var(--paper)}.prev{left:12px}.next{right:12px}
+.count{position:absolute;left:12px;bottom:12px;background:var(--paper);padding:2px 10px;font-size:14px;color:var(--ink);font-variant-numeric:tabular-nums}
 .info{display:flex;flex-direction:column;min-width:0}
-.pill{align-self:flex-start;border:1px solid var(--accent);color:var(--accent);border-radius:14px;padding:3px 12px;font-size:13px;
- letter-spacing:.06em;text-transform:uppercase}
-h2{font-size:30px;line-height:1.15;margin:14px 0 8px;font-weight:700}
-.desc{color:#d4d4da;font-size:17px;margin:0 0 14px}
-.tags{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 18px}
-.tags span{background:var(--chip);color:var(--dim);border-radius:14px;padding:4px 12px;font-size:13px}
-h4{margin:6px 0 10px;font-size:13px;letter-spacing:.1em;color:var(--dim);font-weight:600;text-transform:uppercase}
-.ctl{display:grid;grid-template-columns:1fr 1fr;gap:6px 18px;margin:0 0 18px;padding:0;list-style:none}
-.ctl li{position:relative;padding-left:16px;color:#cfcfd6;font-size:15px}
-.ctl li::before{content:"";position:absolute;left:0;top:.62em;width:7px;height:7px;border-radius:50%;background:var(--accent)}
-.every{display:flex;flex-wrap:wrap;gap:6px 18px;color:var(--dim);margin:0 0 14px}.every b{color:var(--ink);font-weight:600}
-.foot{margin-top:auto;display:flex;justify-content:space-between;gap:12px;color:var(--dim);font-size:13px;flex-wrap:wrap}
-.foot a{color:var(--dim);text-decoration:none}.foot a:hover{color:var(--ink)}
-.cats{display:flex;gap:8px;overflow-x:auto;margin:18px 0 12px;padding-bottom:4px;scrollbar-width:thin}
-.cats button{flex:none;font:inherit;font-size:14px;color:var(--dim);background:transparent;border:1px solid var(--line);border-radius:18px;padding:6px 14px;cursor:pointer}
+.pill{align-self:flex-start;border:1px solid var(--ink);color:var(--ink);padding:1px 10px;font-size:14px}
+h2{font-weight:300;font-size:clamp(30px,3.6vw,48px);letter-spacing:-.02em;line-height:1.05;margin:22px 0 12px}
+.desc{color:var(--grey);font-size:17px;margin:0 0 18px;max-width:52ch}
+.tags{display:flex;flex-wrap:wrap;gap:6px 16px;margin:0 0 24px}
+.tags span{color:var(--grey);font-size:14px;border-bottom:1px solid var(--hair);padding-bottom:1px}
+h4{margin:0 0 12px;font-size:16px;font-weight:500;color:var(--ink);padding-bottom:8px;border-bottom:1px solid var(--ink)}
+.ctl{display:grid;grid-template-columns:1fr 1fr;gap:6px 18px;margin:0 0 24px;padding:0;list-style:none}
+.ctl li{position:relative;padding-left:16px;font-size:15px}
+.ctl li::before{content:"";position:absolute;left:0;top:.62em;width:6px;height:6px;background:var(--accent)}
+.every{display:flex;flex-wrap:wrap;gap:6px 18px;color:var(--grey);margin:0 0 14px;font-size:15px}.every b{color:var(--ink);font-weight:500}
+.foot{margin-top:auto;display:flex;justify-content:space-between;gap:12px;color:var(--grey);font-size:14px;flex-wrap:wrap;border-top:1px solid var(--ink);padding-top:14px}
+.foot a{color:var(--grey);text-decoration:none}.foot a:hover{color:var(--ink)}
+.cats{display:flex;gap:8px 24px;overflow-x:auto;margin:40px 0 24px;padding:0 0 14px;border-bottom:1px solid var(--hair);scrollbar-width:thin}
+.cats button{flex:none;font:inherit;font-size:16px;color:var(--grey);background:none;border:0;border-bottom:2px solid transparent;padding:4px 0;cursor:pointer}
 .cats button:hover{color:var(--ink)}
-.cats button[aria-pressed=true]{background:var(--ink);color:#111;border-color:var(--ink)}
-.cats small{opacity:.6;margin-left:4px}
-.strip{display:flex;gap:10px;overflow-x:auto;padding:2px 2px 8px;scroll-behavior:smooth;scrollbar-width:thin}
-.th{flex:none;width:118px;aspect-ratio:16/9;border-radius:10px;overflow:hidden;border:2px solid transparent;background:var(--panel);
- cursor:pointer;padding:0;position:relative}
+.cats button[aria-pressed=true]{color:var(--ink);border-bottom-color:var(--accent)}
+.cats small{opacity:.6;margin-left:4px;font-size:13px}
+.strip{display:flex;gap:12px;overflow-x:auto;padding:2px 2px 8px;scroll-behavior:smooth;scrollbar-width:thin}
+.th{flex:none;width:118px;aspect-ratio:1/1;overflow:hidden;border:0;background:var(--fog);cursor:pointer;padding:0;position:relative;opacity:.55}
 .th img{width:100%;height:100%;object-fit:cover;display:block}
 .th .ph{font-size:10px}.th .ph b{font-size:11px;font-weight:500}
-.th[aria-current=true]{border-color:var(--accent)}
+.th[aria-current=true]{opacity:1;outline:2px solid var(--accent);outline-offset:2px}
+.th:hover{opacity:1}
 .th:focus-visible,.cats button:focus-visible,.nav:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-.card{overflow:hidden}.info,.stage{min-width:0}
-@media (max-width:760px){.main{grid-template-columns:minmax(0,1fr)}h2{font-size:24px}.desc{font-size:15px}.card{padding:12px;border-radius:14px}}
+.info,.stage{min-width:0}
+@media (max-width:760px){.main{grid-template-columns:minmax(0,1fr);gap:28px}h2{font-size:28px}.desc{font-size:16px}.cats{margin:28px 0 20px}}
 @media (prefers-reduced-motion:reduce){.strip{scroll-behavior:auto}}
 </style></head><body><div class="card"><div class="main"><div class="stage" id="stage"><button class="nav prev" id="prev" aria-label="Previous">&#8249;</button><button class="nav next" id="next" aria-label="Next">&#8250;</button><span class="count" id="count"></span></div><div class="info"><span class="pill" id="pill"></span><h2 id="name"></h2><p class="desc" id="desc"></p><div class="tags" id="tags"></div><h4 id="ctlh">Controls</h4><ul class="ctl" id="ctl"></ul><h4>Every material</h4><div class="every"><span><b>100%</b> procedural</span><span id="eng"></span><span><b>Blender</b> 5.2+</span></div><div class="foot"><span>Automotive Shaders · 21 procedural materials</span><a href="index.html" target="_blank" rel="noopener">Full showcase ↗</a></div></div></div><nav class="cats" id="cats" aria-label="Categories"></nav><div class="strip" id="strip"></div></div><script type="application/json" id="d">{"items": [{"name": "Metallic Red", "cat": "Car Paint", "desc": "Deep metallic red with clear coat", "tags": ["Car Paint", "bump relief", "EEVEE + Cycles", "Edge Wear", "Rust"], "controls": ["Scale", "Variation", "Paint Color", "Flop Color", "Metallic Flakes", "Flake Size", "Base Roughness", "Clear Coat"], "cycles": false, "img": "", "hd": "img/1080/nx__paint_red_metallic.jpg"}, {"name": "Metallic Silver", "cat": "Car Paint", "desc": "Classic silver metallic", "tags": ["Car Paint", "bump relief", "EEVEE + Cycles", "Edge Wear", "Rust"], "controls": ["Scale", "Variation", "Paint Color", "Flop Color", "Metallic Flakes", "Flake Size", "Base Roughness", "Clear Coat"], "cycles": false, "img": "", "hd": "img/1080/nx__paint_silver.jpg"}, {"name": "Graphite Grey", "cat": "Car Paint", "desc": "Dark grey metallic", "tags": ["Car Paint", "bump relief", "EEVEE + Cycles", "Edge Wear", "Rust"], "controls": ["Scale", "Variation", "Paint Color", "Flop Color", "Metallic Flakes", "Flake Size", "Base Roughness", "Clear Coat"], "cycles": false, "img": "", "hd": "img/1080/nx__paint_graphite.jpg"}, {"name": "Metallic Blue", "cat": "Car Paint", "desc": "Rich metallic blue", "tags": ["Car Paint", "bump relief", "EEVEE + Cycles", "Edge Wear", "Rust"], "controls": ["Scale", "Variation", "Paint Color", "Flop Color", "Metallic Flakes", "Flake Size", "Base Roughness", "Clear Coat"], "cycles": false, "img": "", "hd": "img/1080/nx__paint_blue.jpg"}, {"name": "Pearl White", "cat": "Car Paint", "desc": "Pearlescent white with a soft colour shift", "tags": ["Car Paint", "bump relief", "EEVEE + Cycles", "Edge Wear", "Rust"], "controls": ["Scale", "Variation", "Paint Color", "Flop Color", "Metallic Flakes", "Flake Size", "Base Roughness", "Clear Coat"], "cycles": false, "img": "", "hd": "img/1080/nx__paint_white_pearl.jpg"}, {"name": "Gloss Black", "cat": "Car Paint", "desc": "Solid piano black", "tags": ["Car Paint", "bump relief", "EEVEE + Cycles", "Edge Wear", "Rust"], "controls": ["Scale", "Variation", "Paint Color", "Flop Color", "Metallic Flakes", "Flake Size", "Base Roughness", "Clear Coat"], "cycles": false, "img": "", "hd": "img/1080/nx__paint_black.jpg"}, {"name": "Solid Yellow", "cat": "Car Paint", "desc": "Non-metallic solid colour", "tags": ["Car Paint", "bump relief", "EEVEE + Cycles", "Edge Wear", "Rust"], "controls": ["Scale", "Variation", "Paint Color", "Flop Color", "Metallic Flakes", "Flake Size", "Base Roughness", "Clear Coat"], "cycles": false, "img": "", "hd": "img/1080/nx__paint_solid_yellow.jpg"}, {"name": "Candy Apple Red", "cat": "Car Paint", "desc": "Tinted clear coat over silver flakes", "tags": ["Car Paint", "bump relief", "EEVEE + Cycles", "Edge Wear", "Rust"], "controls": ["Scale", "Variation", "Paint Color", "Flop Color", "Metallic Flakes", "Flake Size", "Base Roughness", "Clear Coat"], "cycles": false, "img": "", "hd": "img/1080/nx__paint_candy_red.jpg"}, {"name": "Candy Green", "cat": "Car Paint", "desc": "Custom candy green", "tags": ["Car Paint", "bump relief", "EEVEE + Cycles", "Edge Wear", "Rust"], "controls": ["Scale", "Variation", "Paint Color", "Flop Color", "Metallic Flakes", "Flake Size", "Base Roughness", "Clear Coat"], "cycles": false, "img": "", "hd": "img/1080/nx__paint_candy_green.jpg"}, {"name": "Matte Black Wrap", "cat": "Car Paint", "desc": "Matte vinyl wrap", "tags": ["Car Paint", "bump relief", "EEVEE + Cycles", "Edge Wear", "Rust"], "controls": ["Scale", "Variation", "Color", "Roughness", "Metallic", "Micro Bump", "Bump Strength"], "cycles": false, "img": "", "hd": "img/1080/nx__wrap_matte_black.jpg"}, {"name": "Satin Nardo Grey", "cat": "Car Paint", "desc": "Satin grey wrap", "tags": ["Car Paint", "bump relief", "EEVEE + Cycles", "Edge Wear", "Rust"], "controls": ["Scale", "Variation", "Color", "Roughness", "Metallic", "Micro Bump", "Bump Strength"], "cycles": false, "img": "", "hd": "img/1080/nx__wrap_satin_grey.jpg"}, {"name": "Brushed Steel Wrap", "cat": "Car Paint", "desc": "Metallic brushed-look wrap", "tags": ["Car Paint", "bump relief", "EEVEE + Cycles", "Edge Wear", "Rust"], "controls": ["Scale", "Variation", "Color", "Roughness", "Metallic", "Micro Bump", "Bump Strength"], "cycles": false, "img": "", "hd": "img/1080/nx__wrap_brushed.jpg"}, {"name": "Dashboard Soft-Touch", "cat": "Interior", "desc": "Fine-grained soft-touch plastic", "tags": ["Interior", "bump relief", "EEVEE + Cycles", "Edge Wear", "Rust"], "controls": ["Scale", "Variation", "Color", "Grain Size", "Micro Bump", "Bump Strength"], "cycles": false, "img": "", "hd": "img/1080/nx__dash_soft_touch.jpg"}, {"name": "Nappa Leather Tan", "cat": "Interior", "desc": "Soft seat leather", "tags": ["Interior", "bump relief", "EEVEE + Cycles", "Edge Wear", "Rust"], "controls": ["Scale", "Variation", "Color", "Perforation", "Micro Bump", "Bump Strength"], "cycles": false, "img": "", "hd": "img/1080/nx__nappa_tan.jpg"}, {"name": "Nappa Black Perforated", "cat": "Interior", "desc": "Perforated black seat leather", "tags": ["Interior", "bump relief", "EEVEE + Cycles", "Edge Wear", "Rust"], "controls": ["Scale", "Variation", "Color", "Perforation", "Micro Bump", "Bump Strength"], "cycles": false, "img": "", "hd": "img/1080/nx__nappa_black_perf.jpg"}, {"name": "Nappa Leather Red", "cat": "Interior", "desc": "Sports red leather", "tags": ["Interior", "bump relief", "EEVEE + Cycles", "Edge Wear", "Rust"], "controls": ["Scale", "Variation", "Color", "Perforation", "Micro Bump", "Bump Strength"], "cycles": false, "img": "", "hd": "img/1080/nx__nappa_red.jpg"}, {"name": "Alcantara Black", "cat": "Interior", "desc": "Microfibre suede", "tags": ["Interior", "bump relief", "EEVEE + Cycles", "Edge Wear", "Rust"], "controls": ["Scale", "Variation", "Color", "Micro Bump", "Bump Strength"], "cycles": false, "img": "", "hd": "img/1080/nx__alcantara_black.jpg"}, {"name": "Alcantara Grey", "cat": "Interior", "desc": "Light grey microfibre suede", "tags": ["Interior", "bump relief", "EEVEE + Cycles", "Edge Wear", "Rust"], "controls": ["Scale", "Variation", "Color", "Micro Bump", "Bump Strength"], "cycles": false, "img": "", "hd": "img/1080/nx__alcantara_grey.jpg"}, {"name": "Tyre Rubber", "cat": "Tyres & Parts", "desc": "Tyre sidewall rubber with road dust", "tags": ["Tyres & Parts", "bump relief", "EEVEE + Cycles", "Edge Wear", "Rust"], "controls": ["Scale", "Variation", "Rubber Color", "Road Dust", "Worn Shine", "Micro Bump", "Bump Strength"], "cycles": false, "img": "", "hd": "img/1080/nx__tire.jpg"}, {"name": "New Tyre", "cat": "Tyres & Parts", "desc": "Fresh, clean tyre rubber", "tags": ["Tyres & Parts", "bump relief", "EEVEE + Cycles", "Edge Wear", "Rust"], "controls": ["Scale", "Variation", "Rubber Color", "Road Dust", "Worn Shine", "Micro Bump", "Bump Strength"], "cycles": false, "img": "", "hd": "img/1080/nx__tire_new.jpg"}, {"name": "Brake Disc", "cat": "Tyres & Parts", "desc": "Machined cast-iron disc, heat tint and rust", "tags": ["Tyres & Parts", "bump relief", "EEVEE + Cycles", "Edge Wear", "Rust"], "controls": ["Scale", "Variation", "Metal Color", "Rust", "Heat Tint", "Micro Bump", "Bump Strength"], "cycles": false, "img": "", "hd": "img/1080/nx__brake_disc.jpg"}], "cats": ["Car Paint", "Interior", "Tyres & Parts"]}</script><script>
 const D=JSON.parse(document.getElementById('d').textContent);
