@@ -93,7 +93,7 @@ h4{margin:0 0 12px;font-size:16px;font-weight:500;color:var(--ink);padding-botto
 .sx-faq p{color:var(--grey);margin:0 0 14px}
 .sx-foot{margin-top:72px;border-top:1px solid var(--ink);padding:20px 0 48px;display:flex;justify-content:space-between;color:var(--grey);font-size:15px;flex-wrap:wrap;gap:8px}
 @media (max-width:820px){.sx-renders{grid-template-columns:1fr 1fr}.sx-renders .sq:last-child{display:none}.sx-facts{grid-template-columns:1fr 1fr}.sx-how{grid-template-columns:1fr;gap:24px}}
-.pill,.tags,.every,.foot,.info>h4:not(#ctlh){display:none!important}
+.tags,.every,.foot,.info>h4:not(#ctlh){display:none!important}
 </style></head><body><div class="wrap">
 
 <section class="sx-hero">
@@ -163,7 +163,7 @@ let cat='All', list=D.items, i=0;
 function ph(m,small){return `<div class="ph"><span><b>${esc(m.name)}</b>${small?'':'1920 × 1080 render'}${small?'':`<code>${esc(m.hd)}</code>`}</span></div>`}
 // 1080p render first, then the existing preview, then a placeholder naming the file to render
 function pic(m,small){const srcs=[m.hd,m.img].filter(Boolean);if(!srcs.length)return ph(m,small);
- return `<img alt="${esc(m.name)}" ${small?'loading="lazy"':''} src="${esc(srcs[0])}" data-alt="${esc(srcs[1]||'')}"
+ return `<img alt="${esc(m.name)}"  src="${esc(srcs[0])}" data-alt="${esc(srcs[1]||'')}"
   onerror="if(this.dataset.alt){this.src=this.dataset.alt;this.dataset.alt=''}else{this.outerHTML=this.parentNode.dataset.ph}">`}
 function show(n){if(!list.length)return;i=(n+list.length)%list.length;const m=list[i];
  const st=$('#stage');st.dataset.ph=ph(m);st.querySelectorAll('img,.ph').forEach(e=>e.remove());st.insertAdjacentHTML('afterbegin',pic(m));
@@ -179,7 +179,7 @@ function strip(){const s=$('#strip');s.innerHTML=list.map((m,k)=>`<button class=
 function cats(){const c=$('#cats');const names=['All',...D.cats];
  const firstOf=n=>n==='All'?D.items[0]:D.items.find(x=>x.cat===n);
  c.innerHTML=names.map(n=>{const m=firstOf(n);const k=n==='All'?D.items.length:D.items.filter(x=>x.cat===n).length;return `<button aria-pressed="${n===cat}" data-c="${esc(n)}"><span class="cth" data-ph="${esc(ph(m,1))}">${pic(m,1)}</span><span class="cl">${esc(n)}<small>${k}</small></span></button>`}).join('');
- c.querySelectorAll('button').forEach(b=>b.onclick=()=>{cat=b.dataset.c;list=cat==='All'?D.items:D.items.filter(m=>m.cat===cat);cats();strip();show(0)})}
+ c.querySelectorAll('button').forEach(b=>b.onclick=()=>{cat=b.dataset.c;list=cat==='All'?D.items:D.items.filter(m=>m.cat===cat);cats();strip();show(0);document.querySelector('.main').scrollIntoView({behavior:'smooth',block:'start'})})}
 $('#prev').onclick=()=>show(i-1);$('#next').onclick=()=>show(i+1);
 document.addEventListener('keydown',e=>{if(e.key==='ArrowLeft')show(i-1);if(e.key==='ArrowRight')show(i+1)});
 let tx=null;$('#stage').addEventListener('touchstart',e=>tx=e.touches[0].clientX,{passive:true});
